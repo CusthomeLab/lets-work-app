@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
 const {autoUpdater} = require('electron-updater')
@@ -17,6 +17,59 @@ function mainWindow() {
     title: "Let's Work",
     icon: path.join(__dirname, '../public/icons/macOS/Icon.icns')
   })
+
+  // Définit le menu de l'app
+  let template = [
+    {
+      label: 'View',
+      submenu: [
+        {role: 'reload'},
+        {role: 'forcereload'},
+        {type: 'separator'},
+        {role: 'resetzoom'},
+        {role: 'zoomin'},
+        {role: 'zoomout'},
+        {type: 'separator'},
+        {role: 'togglefullscreen'}
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [{role: 'minimize'}, {role: 'close'}]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click() {
+            require('electron').shell.openExternal('https://electronjs.org')
+          }
+        }
+      ]
+    }
+  ]
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: app.getName(),
+      submenu: [
+        {role: 'about'},
+        {type: 'separator'},
+        {role: 'services', submenu: []},
+        {type: 'separator'},
+        {role: 'hide'},
+        {role: 'hideothers'},
+        {role: 'unhide'},
+        {type: 'separator'},
+        {role: 'quit'}
+      ]
+    })
+    // Window menu
+    template[2].submenu = [{role: 'close'}, {role: 'minimize'}, {role: 'zoom'}, {type: 'separator'}, {role: 'front'}]
+  }
+  // Créé le Menu
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 
   // et charge le index.html de l'application.
   //win.loadFile('index.html')
