@@ -1,23 +1,26 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
+const {autoUpdater} = require('electron-updater')
+const log = require('electron-log')
 
 // Gardez une reference globale de l'objet window, si vous ne le faites pas, la fenetre sera
 // fermee automatiquement quand l'objet JavaScript sera garbage collected.
 let win
 
-function createWindow() {
+function mainWindow() {
   // Créer le browser window.
-  win = new BrowserWindow({width: 1000, height: 600, icon: path.join(__dirname, 'assets/icons/macOS/Icon.icns')})
+  win = new BrowserWindow({
+    width: 1000,
+    height: 600,
+    titleBarStyle: 'hiddenInset',
+    title: "Let's Work",
+    icon: path.join(__dirname, '../public/icons/macOS/Icon.icns')
+  })
 
   // et charge le index.html de l'application.
   //win.loadFile('index.html')
   win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
-
-  app.setAboutPanelOptions({
-    applicationName: "Let's Work",
-    applicationVersion: '1.0.0'
-  })
 
   // Ouvre les DevTools.
   // win.webContents.openDevTools()
@@ -34,7 +37,7 @@ function createWindow() {
 // Cette méthode sera appelée quant Electron aura fini
 // de s'initialiser et sera prêt à créer des fenêtres de navigation.
 // Certaines APIs peuvent être utilisées uniquement quand cet événement est émit.
-app.on('ready', createWindow)
+app.on('ready', mainWindow)
 
 // Quitte l'application quand toutes les fenêtres sont fermées.
 app.on('window-all-closed', () => {
@@ -49,8 +52,50 @@ app.on('activate', () => {
   // Sur macOS, il est commun de re-créer une fenêtre de l'application quand
   // l'icône du dock est cliquée et qu'il n'y a pas d'autres fenêtres d'ouvertes.
   if (win === null) {
-    createWindow()
+    mainWindow()
   }
 })
 
 // Dans ce fichier, vous pouvez inclure le reste de votre code spécifique au processus principal. Vous pouvez également le mettre dans des fichiers séparés et les inclure ici.
+
+// Logs pour la mise à jour automatique
+autoUpdater.logger = log
+autoUpdater.logger.transports.file.level = 'info'
+log.info('App starting...')
+
+function sendStatusToWindow(text) {
+  log.info(text)
+  win.webContents.send('message', text)
+}
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...')
+})
+autoUpdater.on('update-available', info => {
+  sendStatusToWindow('Update available.')
+})
+autoUpdater.on('update-not-available', info => {
+  sendStatusToWindow('Update not available.')
+})
+autoUpdater.on('error', err => {
+  sendStatusToWindow('Error in auto-updater. ' + err)
+})
+autoUpdater.on('download-progress', progressObj => {
+  let log_message = 'Download speed: ' + progressObj.bytesPerSecond
+  log_message = log_message + ' - Downloaded ' + Math.round(progressObj.percent) + '%'
+  log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+  sendStatusToWindow(log_message)
+})
+autoUpdater.on('update-downloaded', info => {
+  sendStatusToWindow('Update downloaded')
+})
+
+//-------------------------------------------------------------------
+// Auto updates - Option 1 - Simplest version
+//
+// This will immediately download an update, then install when the
+// app quits.
+//-------------------------------------------------------------------
+app.on('ready', function() {
+  autoUpdater.checkForUpdatesAndNotify()
+})
