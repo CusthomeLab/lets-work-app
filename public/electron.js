@@ -21,27 +21,29 @@ function mainWindow() {
   // Définit le menu de l'app
   let template = [
     {
-      label: 'View',
+      label: 'Affichage',
       submenu: [
-        {role: 'reload'},
-        {role: 'forcereload'},
+        {role: 'reload', label: 'Recharger'},
+        {role: 'forcereload', label: 'Recharger en force'},
         {type: 'separator'},
-        {role: 'resetzoom'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
+        {role: 'resetzoom', label: 'Taille réelle'},
+        {role: 'zoomin', label: 'Zoom avant'},
+        {role: 'zoomout', label: 'Zoom arrière'},
         {type: 'separator'},
-        {role: 'togglefullscreen'}
+        {role: 'togglefullscreen', label: 'Plein écran'}
       ]
     },
     {
       role: 'window',
-      submenu: [{role: 'minimize'}, {role: 'close'}]
+      label: 'Fenêtre',
+      submenu: [{role: 'minimize', label: 'Réduire'}, {role: 'close', label: 'Fermer'}]
     },
     {
       role: 'help',
+      label: 'Aide',
       submenu: [
         {
-          label: 'Learn More',
+          label: 'En savoir plus',
           click() {
             require('electron').shell.openExternal('https://electronjs.org')
           }
@@ -53,19 +55,25 @@ function mainWindow() {
     template.unshift({
       label: app.getName(),
       submenu: [
-        {role: 'about'},
+        {role: 'about', label: 'À propos de'},
         {type: 'separator'},
-        {role: 'services', submenu: []},
+        {role: 'services', label: 'Services', submenu: []},
         {type: 'separator'},
-        {role: 'hide'},
-        {role: 'hideothers'},
-        {role: 'unhide'},
+        {role: 'hide', label: 'Masquer'},
+        {role: 'hideothers', label: 'Masquer les autres'},
+        {role: 'unhide', label: 'Afficher'},
         {type: 'separator'},
-        {role: 'quit'}
+        {role: 'quit', label: 'Quitter'}
       ]
     })
     // Window menu
-    template[2].submenu = [{role: 'close'}, {role: 'minimize'}, {role: 'zoom'}, {type: 'separator'}, {role: 'front'}]
+    template[2].submenu = [
+      {role: 'close', label: 'Fermer la fenêtre'},
+      {role: 'minimize', label: 'Réduire'},
+      {role: 'zoom', label: 'Zoomer'},
+      {type: 'separator'},
+      {role: 'front', label: 'Tout ramener au premier plan'}
+    ]
   }
   // Créé le Menu
   const menu = Menu.buildFromTemplate(template)
