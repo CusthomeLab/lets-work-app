@@ -1,0 +1,15 @@
+directories:
+  output: release/${version}
+appId: com.magelan.app
+productName: Lets Work
+copyright: Copyright © 2018 ${author}
+mac:
+  category: public.app-category.productivity
+  icon: build/icons/macOS/Icon.icns
+  target:
+    - dmg
+    - zip
+win:
+  icon: build/icons/windows/Icon.ico
+  target:
+    - nsis
