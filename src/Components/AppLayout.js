@@ -45,7 +45,14 @@ class AppLayout extends React.Component {
           onBreakpoint={this.onCollapse}
           theme="light"
           width="220"
-          style={{overflow: 'auto', height: '100vh', position: 'fixed', left: 0, borderRight: '1px solid #e8e8e8'}}>
+          style={{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+            paddingTop: '30px',
+            borderRight: '1px solid #e8e8e8'
+          }}>
           <div
             style={{
               height: '32px',
@@ -130,7 +137,7 @@ class AppLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout style={{marginLeft: this.state.collapsed ? 80 : 220}}>
-          <Header style={{background: '#fff', padding: '0 0 0 16px'}}>
+          <Header style={{background: '#fff', padding: '16px 0 0 16px', height: 'auto'}}>
             <h1 style={{color: '#000'}}>
               <span style={{paddingRight: '10px'}}>{this.props.title}</span>
               {this.props.tagTitle && (
