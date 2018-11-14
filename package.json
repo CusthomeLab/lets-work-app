@@ -29,9 +29,8 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder --x64 --macos",
-    "send": "electron-builder --x64 --macos --win -p always"
+    "pack": "electron-builder --x64 --macos",
+    "ship": "electron-builder --x64 --macos --win -p always"
   },
   "eslintConfig": {
     "extends": "react-app"
