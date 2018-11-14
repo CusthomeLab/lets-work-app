@@ -1,7 +1,7 @@
 {
   "name": "lets-work-app",
   "productName": "Lets Work",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "App to easily open work tools and make your life easier !",
   "private": true,
   "author": "Magelan",
@@ -29,7 +29,7 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "pack": "electron-builder --x64 --macos",
+    "packing": "electron-builder --x64 --macos",
     "ship": "electron-builder --x64 --macos --win -p always"
   },
   "eslintConfig": {
