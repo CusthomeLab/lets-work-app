@@ -1,8 +1,10 @@
-directories:
-  output: release/${version}
 appId: com.magelan.app
 productName: Lets Work
 copyright: Copyright © 2018 ${author}
+extraResources:
+  - from: build/scripts/
+directories:
+  output: release/${version}
 mac:
   category: public.app-category.productivity
   icon: build/icons/macOS/Icon.icns

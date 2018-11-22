@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {NavLink, withRouter} from 'react-router-dom'
 import {Layout, Menu, Icon, Tag} from 'antd'
 import styled, {keyframes} from 'styled-components'
@@ -19,7 +19,7 @@ const LogoSpin = styled.img`
   animation: ${spin} infinite 20s linear;
 `
 
-class AppLayout extends React.Component {
+class AppLayout extends Component {
   state = {
     collapsed: false,
     finishedCollapsed: true

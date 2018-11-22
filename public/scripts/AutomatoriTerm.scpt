@@ -1,10 +1,8 @@
 #!/usr/bin/env osascript
 
-on run
-	set argsCmd to "docker-sync-stack start"
-	set argsPwd to "cd Documents/Projets/webApp"
-	scriptRun(argsCmd, argsPwd)
-end run
+set argsCmd to projectCmd
+set argsPwd to "cd " & projectPath
+scriptRun(argsCmd, argsPwd)
 
 on scriptRun(argsCmd, argsPwd)
 	set withCmd to (argsCmd)
