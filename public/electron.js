@@ -7,8 +7,12 @@ const log = require('electron-log')
 // Gardez une reference globale de l'objet window, si vous ne le faites pas, la fenetre sera
 // fermee automatiquement quand l'objet JavaScript sera garbage collected.
 let win
+let prefWindow
 
 function mainWindow() {
+  // --------------------------------------
+  //  Fenêtre Principale de l'app
+  // --------------------------------------
   // Créer le browser window.
   win = new BrowserWindow({
     width: 1000,
@@ -17,7 +21,6 @@ function mainWindow() {
     title: "Let's Work",
     icon: path.join(__dirname, '../public/icons/macOS/Icon.icns')
   })
-
   // Définit le menu de l'app
   let template = [
     {
@@ -55,11 +58,18 @@ function mainWindow() {
     template.unshift({
       label: app.getName(),
       submenu: [
-        {role: 'about', label: 'À propos de'},
+        {role: 'about', label: 'À propos de Lets Work'},
         {type: 'separator'},
+        {
+          label: 'Préférences...',
+          accelerator: 'CmdOrCtrl + ,',
+          click() {
+            prefWindow.show()
+          }
+        },
         {role: 'services', label: 'Services', submenu: []},
         {type: 'separator'},
-        {role: 'hide', label: 'Masquer'},
+        {role: 'hide', label: 'Masquer Lets Work'},
         {role: 'hideothers', label: 'Masquer les autres'},
         {role: 'unhide', label: 'Afficher'},
         {type: 'separator'},
@@ -81,10 +91,14 @@ function mainWindow() {
 
   // et charge le index.html de l'application.
   //win.loadFile('index.html')
+
   win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
 
-  // Ouvre les DevTools.
-  // win.webContents.openDevTools()
+  // Ouvre les DevTools de la fenêtre principale, uniquement en environnement de développement.
+  if (isDev) {
+    win.webContents.openDevTools()
+  } else {
+  }
 
   // Émit lorsque la fenêtre est fermée.
   win.on('closed', () => {
@@ -92,6 +106,36 @@ function mainWindow() {
     // dans un tableau si votre application supporte le multi-fenêtre. C'est le moment
     // où vous devez supprimer l'élément correspondant.
     win = null
+  })
+
+  // --------------------------------------
+  //  Fenêtre Préférences
+  // --------------------------------------
+  // Créer le browser window des préférences.
+  prefWindow = new BrowserWindow({
+    parent: win,
+    title: 'Préférences',
+    modal: true,
+    show: false
+  })
+
+  // Ouvre les DevTools de la fenêtre Préférences, uniquement en environnement de développement.
+  if (isDev) {
+    prefWindow.webContents.openDevTools()
+  } else {
+  }
+
+  // et charge le index.html de l'application.
+  prefWindow.loadURL(
+    isDev ? 'http://localhost:3000/#/preferences' : `file://${path.join(__dirname, '../build/index.html#/preferences')}`
+  )
+
+  // Émit lorsque la fenêtre est fermée.
+  prefWindow.on('closed', () => {
+    // Dé-référence l'objet window , normalement, vous stockeriez les fenêtres
+    // dans un tableau si votre application supporte le multi-fenêtre. C'est le moment
+    // où vous devez supprimer l'élément correspondant.
+    prefWindow = null
   })
 }
 
@@ -119,6 +163,9 @@ app.on('activate', () => {
 
 // Dans ce fichier, vous pouvez inclure le reste de votre code spécifique au processus principal. Vous pouvez également le mettre dans des fichiers séparés et les inclure ici.
 
+// --------------------------------------
+//  Système de mise à jour automatique
+// --------------------------------------
 // Logs pour la mise à jour automatique
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'

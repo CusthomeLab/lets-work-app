@@ -8,17 +8,17 @@ import SectionContent from '../Components/SectionContent'
 
 const {Content} = Layout
 
-const ProjectPageLayout = ({urls, projectKey, hasDev}) => {
+const ProjectPageLayout = ({params, projectKey, hasDev}) => {
   let arrayUrls = []
-  urls.JIRA_URL && arrayUrls.push(urls.JIRA_URL)
-  urls.BITBUCKET_FRONT_URL && arrayUrls.push(urls.BITBUCKET_FRONT_URL)
-  urls.BITBUCKET_BACK_URL && arrayUrls.push(urls.BITBUCKET_BACK_URL)
+  params.JIRA_URL && arrayUrls.push(params.JIRA_URL)
+  params.BITBUCKET_FRONT_URL && arrayUrls.push(params.BITBUCKET_FRONT_URL)
+  params.BITBUCKET_BACK_URL && arrayUrls.push(params.BITBUCKET_BACK_URL)
   return (
     <Content style={{margin: '24px 16px', overflow: 'initial'}}>
       <HeaderContent projectKey={projectKey} urls={arrayUrls} />
       {/* Partie Gestion de Projet */}
       <SectionContent sectionTitle="Gestion de Projet">
-        <JiraAccess url={urls.JIRA_URL} />
+        <JiraAccess url={params.JIRA_URL} />
       </SectionContent>
       {/* Partie Développement */}
       {hasDev && (
@@ -26,16 +26,16 @@ const ProjectPageLayout = ({urls, projectKey, hasDev}) => {
           {/* Dépôt front */}
           <Row style={{display: 'flex', alignItems: 'center'}}>
             {/* Bitbucket dépôt front */}
-            <BitbucketAccess label="Dépôt Front" url={urls.BITBUCKET_FRONT_URL} />
+            <BitbucketAccess label="Dépôt Front" url={params.BITBUCKET_FRONT_URL} />
             {/* iTerm dépôt front */}
-            <ItermAccess />
+            <ItermAccess path={params.paths.front} cmd={params.cmds.front} />
           </Row>
           {/* Dépôt back */}
           <Row style={{marginTop: '20px', display: 'flex', alignItems: 'center'}}>
             {/* Bitbucket dépôt back */}
-            <BitbucketAccess label="Dépôt Back" url={urls.BITBUCKET_BACK_URL} />
+            <BitbucketAccess label="Dépôt Back" url={params.BITBUCKET_BACK_URL} />
             {/* iTerm dépôt back */}
-            <ItermAccess />
+            <ItermAccess path={params.paths.back} cmd={params.cmds.back} />
           </Row>
         </SectionContent>
       )}
