@@ -17,8 +17,8 @@ export const BACKOFFICE_PARAMS = {
 
 export const CONGIGURATOR_PARAMS = {
   JIRA_URL: 'https://dev-magelan.atlassian.net/secure/RapidBoard.jspa?rapidView=9&projectKey=CFG',
-  BITBUCKET_FRONT_URL: 'https://bitbucket.org/teammagelan/configurateurclient/',
-  BITBUCKET_BACK_URL: 'https://bitbucket.org/teammagelan/configurateur/',
+  BITBUCKET_FRONT_URL: 'https://bitbucket.org/teammagelan/config3dclient/',
+  BITBUCKET_BACK_URL: 'https://bitbucket.org/teammagelan/config3d/',
   paths: {front: 'pathConfiguratorFront', back: 'pathConfiguratorBack'},
   cmds: {front: 'cmdConfiguratorFront', back: 'cmdConfiguratorBack'}
 }
