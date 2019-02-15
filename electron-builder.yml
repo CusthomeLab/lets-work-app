@@ -8,6 +8,7 @@ directories:
 mac:
   category: public.app-category.productivity
   icon: build/icons/macOS/Icon.icns
+  darkModeSupport: true
   target:
     - dmg
     - zip
